@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.practica.exceptions.ResourceNotFoundException;
@@ -31,6 +32,11 @@ public class ProductoController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ProductoDto getProducto(@PathVariable(value="id") Long id) throws ResourceNotFoundException {
 		return this.productoBusiness.getProductoById(id);
+	}
+	
+	@RequestMapping(value = "/search-products", method = RequestMethod.GET)
+	public List<ProductoDto> searchProductos(@RequestParam String text) throws ResourceNotFoundException {
+		return this.productoBusiness.searchProductos(text);
 	}
 	
 }
