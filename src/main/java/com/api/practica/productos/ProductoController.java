@@ -3,6 +3,7 @@ package com.api.practica.productos;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,5 +39,11 @@ public class ProductoController {
 	public List<ProductoDto> searchProductos(@RequestParam String text) throws ResourceNotFoundException {
 		return this.productoBusiness.searchProductos(text);
 	}
+	
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+	public void deleteProductoById(@PathVariable(value="id") Long id) throws ResourceNotFoundException {
+		this.productoBusiness.deleteProductoById(id);
+	}
+	
 	
 }

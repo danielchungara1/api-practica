@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.api.practica.commons.ModelMapperWrapper;
@@ -44,6 +45,15 @@ public class ProductoBusiness {
 
 	public List<ProductoDto> searchProductos(String text) {	
 		return Arrays.asList(this.modelMapper.map(this.productoRepository.findAllByNombreContaining(text), ProductoDto[].class));
+	}
+
+	public void deleteProductoById(Long id) {
+		try {
+			this.productoRepository.deleteById(id);			
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException("Producto no encontrado id: " + id);
+		}
+
 	}
 
 }
