@@ -56,4 +56,9 @@ public class ProductoBusiness {
 
 	}
 
+	public ProductoDto updateProducto(ProductoDto producto) {
+		// TODO Auto-generated method stub
+		return this.saveProducto(producto);
+	}
+
 }

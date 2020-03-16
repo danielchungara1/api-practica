@@ -45,5 +45,10 @@ public class ProductoController {
 		this.productoBusiness.deleteProductoById(id);
 	}
 	
+	@RequestMapping(value = "/edit", method = RequestMethod.PUT)
+	public ProductoDto updateProducto(@RequestBody ProductoDto producto) {
+		return this.productoBusiness.updateProducto(producto);
+	}
+	
 	
 }
