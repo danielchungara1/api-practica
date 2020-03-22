@@ -1,0 +1,1 @@
+insert into usuarios (email, password) values ("administrador", "admin");

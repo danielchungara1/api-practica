@@ -1,20 +1,13 @@
 package com.api.practica.productos;
 
+import com.api.practica.commons.dto.BaseDto;
+
 import java.math.BigDecimal;
 
-public class ProductoDto {
+public class ProductoDto extends BaseDto {
 	
-	private Long id;
 	private String nombre;
 	private BigDecimal precio;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getNombre() {
 		return nombre;
@@ -31,7 +24,5 @@ public class ProductoDto {
 	public void setPrecio(BigDecimal precio) {
 		this.precio = precio;
 	}
-	
-	
-	
+
 }

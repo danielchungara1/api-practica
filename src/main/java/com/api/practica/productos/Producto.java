@@ -1,5 +1,7 @@
 package com.api.practica.productos;
 
+import com.api.practica.commons.entity.BaseEntity;
+
 import java.math.BigDecimal;
 
 import javax.persistence.Entity;
@@ -11,24 +13,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "productos")
-public class Producto {
+public class Producto extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
 	private String nombre;
 	
 	private BigDecimal precio;
-	
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getNombre() {
 		return nombre;
