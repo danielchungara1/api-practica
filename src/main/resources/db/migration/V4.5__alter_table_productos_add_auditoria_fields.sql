@@ -1,0 +1,4 @@
+ALTER TABLE productos
+    ADD COLUMN created_at timestamp NOT NULL DEFAULT NOW(),
+    ADD COLUMN updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    ADD COLUMN deleted_at TIMESTAMP NULL DEFAULT NULL;
