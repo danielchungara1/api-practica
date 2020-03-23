@@ -18,6 +18,10 @@ public class IngresoController {
 		return this.ingresoBusiness.autenticar(usuario);
 	}
 
+	@RequestMapping(value = "/sing-in", method = RequestMethod.POST)
+	public UsuarioDto singIn(@RequestBody UsuarioDto usuario) {
+		return this.ingresoBusiness.signIn(usuario);
+	}
 
 
 //	@RequestMapping(value = "", method = RequestMethod.POST)
