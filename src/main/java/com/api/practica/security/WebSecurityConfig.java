@@ -9,10 +9,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@EnableWebMvc
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
-
-    //PATHS SIN LOGIN SPRING SECURITY
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter  {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/v2/api-docs",
@@ -23,19 +20,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 "/webjars/**",
                 "/**");
     }
-
-    // CORS CONFIG
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("*")
-                        .allowedMethods("GET", "PUT", "POST", "PATCH", "DELETE", "OPTIONS");
-            }
-        };
-    }
-
-
 }
