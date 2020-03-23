@@ -1,9 +1,12 @@
 package com.api.practica.usuario;
 
 import com.api.practica.commons.entity.BaseEntity;
+import com.api.practica.security.Rol;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -12,6 +15,12 @@ public class Usuario extends BaseEntity {
 
 	private String email;
 	private String password;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(	name = "usuarios_roles",
+			joinColumns = @JoinColumn(name = "usuario_id"),
+			inverseJoinColumns = @JoinColumn(name = "rol_id"))
+	private List<Rol> roles;
 
 	public String getEmail() {
 		return email;
