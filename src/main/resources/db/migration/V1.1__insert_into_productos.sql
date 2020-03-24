@@ -1,1 +1,1 @@
-insert into productos (nombre, precio) values ("Notebook", 29999), ("Monitor", 19999);
+insert into productos (nombre, precio) values ('Notebook', 29999), ('Monitor', 19999);

@@ -1,1 +1,1 @@
-insert into usuarios (email, password) values ("administrador", "admin");
+insert into usuarios (id, email, password) values (1, 'administrador', '$2a$10$RJHkIJgOr4TlAPGMOn5B.O7HijxaJ/bKVi7Ytu8EvRlFBhCLGhoGi');

@@ -69,16 +69,19 @@ public class IngresoBusiness {
 //	}
 
     public UsuarioDto autenticar(UsuarioDto usuario) {
-        Optional<Usuario> u = this.usuarioRepository.findByEmailAndPassword(usuario.getEmail(), usuario.getPassword());
+        Optional<Usuario> u = this.usuarioRepository.findByEmail(usuario.getEmail());
         if (!u.isPresent()) {
-            throw new CredencialesInvalidasException("Nombre de usuario o password incorrectos.");
+            throw new CredencialesInvalidasException("Usuario invalido.");
         }
 
-        // token
+        if (this.passwordManager.matches(usuario.getPassword(), u.get().getPassword())){
+            throw new CredencialesInvalidasException("Password invalido.");
+        }
+
         return this.modelMapper.map(u.get(), UsuarioDto.class);
     }
 
-    public UsuarioDto signIn(UsuarioDto usuario) {
+    public UsuarioDto registrar(UsuarioDto usuario) {
 
         if (this.usuarioRepository.existsByEmail(usuario.getEmail())){
             throw new EmailExistenteException("El email ingresado no esta disponible.");

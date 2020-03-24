@@ -4,8 +4,6 @@ import com.api.practica.usuario.UsuarioDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(path = "/ingreso")
 public class IngresoController {
@@ -18,9 +16,9 @@ public class IngresoController {
 		return this.ingresoBusiness.autenticar(usuario);
 	}
 
-	@RequestMapping(value = "/sing-in", method = RequestMethod.POST)
-	public UsuarioDto singIn(@RequestBody UsuarioDto usuario) {
-		return this.ingresoBusiness.signIn(usuario);
+	@RequestMapping(value = "/registrar", method = RequestMethod.POST)
+	public UsuarioDto registrar(@RequestBody UsuarioDto usuario) {
+		return this.ingresoBusiness.registrar(usuario);
 	}
 
 
