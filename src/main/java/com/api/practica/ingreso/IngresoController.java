@@ -20,35 +20,5 @@ public class IngresoController {
 	public UsuarioDto registrar(@RequestBody UsuarioDto usuario) {
 		return this.ingresoBusiness.registrar(usuario);
 	}
-
-
-//	@RequestMapping(value = "", method = RequestMethod.POST)
-//	public ProductoDto saveProducto(@RequestBody ProductoDto newProducto) {
-//		return this.productoBusiness.saveProducto(newProducto);
-//	}
-//	@RequestMapping(value = "", method = RequestMethod.GET)
-//	public List<ProductoDto> listaProductos() {
-//		return this.productoBusiness.getProductos();
-//	}
-//
-//	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-//	public ProductoDto getProducto(@PathVariable(value="id") Long id) throws ResourceNotFoundException {
-//		return this.productoBusiness.getProductoById(id);
-//	}
-//
-//	@RequestMapping(value = "/search-products", method = RequestMethod.GET)
-//	public List<ProductoDto> searchProductos(@RequestParam String text) throws ResourceNotFoundException {
-//		return this.productoBusiness.searchProductos(text);
-//	}
-//
-//	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-//	public void deleteProductoById(@PathVariable(value="id") Long id) throws ResourceNotFoundException {
-//		this.productoBusiness.deleteProductoById(id);
-//	}
-//
-//	@RequestMapping(value = "/edit", method = RequestMethod.PUT)
-//	public ProductoDto updateProducto(@RequestBody ProductoDto producto) {
-//		return this.productoBusiness.updateProducto(producto);
-//	}
 	
 }
