@@ -37,6 +37,11 @@ public class IngresoBusiness {
             throw new CredencialesInvalidasException("Password invalido.");
         }
 
+        // debo crear el token agregandole el username y los roles que tiene.
+        // String token = usuario.getEmail() + usuario.getRolesAsString();
+        // UsuarioDto uDto = this.modelMapper.map(u.get(), UsuarioDto.class)
+        //uDto.setToken(token);
+
         return this.modelMapper.map(u.get(), UsuarioDto.class);
     }
 
