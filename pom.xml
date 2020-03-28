@@ -96,6 +96,12 @@
 			<version>5.3.0.RELEASE</version>
 		</dependency>
 
+		<dependency>
+			<!-- JSON Web Token Support -->
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
 
 	</dependencies>
 

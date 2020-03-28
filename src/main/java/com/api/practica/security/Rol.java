@@ -2,13 +2,14 @@ package com.api.practica.security;
 
 import com.api.practica.commons.entity.BaseEntity;
 import com.api.practica.commons.entity.BaseEntityWithTimeStamp;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "roles")
-public class Rol extends BaseEntityWithTimeStamp {
+public class Rol extends BaseEntityWithTimeStamp implements GrantedAuthority {
     private String nombre;
     private String description;
 
@@ -26,5 +27,10 @@ public class Rol extends BaseEntityWithTimeStamp {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String getAuthority() {
+        return this.nombre;
     }
 }

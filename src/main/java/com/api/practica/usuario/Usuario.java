@@ -37,4 +37,12 @@ public class Usuario extends BaseEntity {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public List<Rol> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Rol> roles) {
+		this.roles = roles;
+	}
 }
