@@ -32,11 +32,10 @@ public class IngresoBusiness {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     public LoginResponseDto autenticar(LoginRequestDto usuario) {
         Optional<Usuario> u = this.usuarioRepository.findByEmail(usuario.getEmail());
