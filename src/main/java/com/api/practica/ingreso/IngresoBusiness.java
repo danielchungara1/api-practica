@@ -3,56 +3,119 @@ package com.api.practica.ingreso;
 import com.api.practica.commons.ModelMapperWrapper;
 import com.api.practica.commons.PasswordManager;
 import com.api.practica.exceptions.CredencialesInvalidasException;
+import com.api.practica.exceptions.CustomException;
 import com.api.practica.exceptions.EmailExistenteException;
+import com.api.practica.security.JwtTokenProvider;
 import com.api.practica.usuario.Usuario;
-import com.api.practica.usuario.UsuarioDto;
 import com.api.practica.usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
 public class IngresoBusiness {
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
-    ModelMapperWrapper modelMapper;
+    private ModelMapperWrapper modelMapper;
 
     @Autowired
-    PasswordManager passwordManager;
+    private AuthenticationManager authenticationManager;
 
-    public UsuarioDto autenticar(UsuarioDto usuario) {
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
+    public LoginResponseDto autenticar(LoginRequestDto usuario) {
         Optional<Usuario> u = this.usuarioRepository.findByEmail(usuario.getEmail());
         if (!u.isPresent()) {
             throw new CredencialesInvalidasException("Usuario invalido.");
         }
 
-        if (this.passwordManager.matches(usuario.getPassword(), u.get().getPassword())){
-            throw new CredencialesInvalidasException("Password invalido.");
+        Usuario usuarioBd = u.get();
+//
+//        if (passwordEncoder.matches(usuario.getPassword(), usuarioBd.getPassword())){
+//            throw new CredencialesInvalidasException("Password invalido.");
+//        }
+
+        try {
+
+            this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(usuario.getEmail(), usuario.getPassword()));
+            String token =  jwtTokenProvider.createToken(usuarioBd.getEmail(), usuarioBd.getRoles());
+            LoginResponseDto response = new LoginResponseDto();
+            response.setToken(token);
+            return response;
+
+        } catch (AuthenticationException e) {
+
+            throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
+
         }
 
-        // debo crear el token agregandole el username y los roles que tiene.
-        // String token = usuario.getEmail() + usuario.getRolesAsString();
-        // UsuarioDto uDto = this.modelMapper.map(u.get(), UsuarioDto.class)
-        //uDto.setToken(token);
-
-        return this.modelMapper.map(u.get(), UsuarioDto.class);
     }
 
-    public UsuarioDto registrar(UsuarioDto usuario) {
+
+
+    public LoginRequestDto registrar(LoginRequestDto usuario) {
 
         if (this.usuarioRepository.existsByEmail(usuario.getEmail())){
             throw new EmailExistenteException("El email ingresado no esta disponible.");
         }
 
-        usuario.setPassword(this.passwordManager.encode(usuario.getEmail()));
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         Usuario u = this.usuarioRepository.save(modelMapper.map(usuario, Usuario.class));
-        return this.modelMapper.map(u, UsuarioDto.class);
+        return this.modelMapper.map(u, LoginRequestDto.class);
+    }
+
+    public AuthenticationManager getAuthenticationManager() {
+        return authenticationManager;
+    }
+
+    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
+
+    public JwtTokenProvider getJwtTokenProvider() {
+        return jwtTokenProvider;
+    }
+
+    public void setJwtTokenProvider(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
+
+    public PasswordEncoder getPasswordEncoder() {
+        return passwordEncoder;
+    }
+
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public UsuarioRepository getUsuarioRepository() {
+        return usuarioRepository;
+    }
+
+    public void setUsuarioRepository(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
+
+    public ModelMapperWrapper getModelMapper() {
+        return modelMapper;
+    }
+
+    public void setModelMapper(ModelMapperWrapper modelMapper) {
+        this.modelMapper = modelMapper;
     }
 }

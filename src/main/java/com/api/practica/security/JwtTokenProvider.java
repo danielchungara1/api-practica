@@ -30,9 +30,11 @@ public class JwtTokenProvider {
      * microservices environment, this key would be kept on a config-server.
      */
 
-    private String secretKey = "secretKey";
+
+    private String secretKey = "piramides";
 
     private long validityInMilliseconds = 3600000; // 1h
+
 
     @Autowired
     private MyUserDetails myUserDetails;

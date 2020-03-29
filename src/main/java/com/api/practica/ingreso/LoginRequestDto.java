@@ -1,14 +1,13 @@
-package com.api.practica.usuario;
+package com.api.practica.ingreso;
 
 import com.api.practica.commons.dto.BaseDto;
 
 
-public class UsuarioDto extends BaseDto {
+public class LoginRequestDto {
 	
 	private String email;
 	private String password;
 
-	private String token;
 
 	public String getEmail() {
 		return email;
@@ -26,11 +25,4 @@ public class UsuarioDto extends BaseDto {
 		this.password = password;
 	}
 
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
 }
