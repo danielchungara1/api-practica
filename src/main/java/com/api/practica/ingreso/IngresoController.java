@@ -18,14 +18,18 @@ public class IngresoController {
 	@ApiResponses(value = {
 			@ApiResponse(code = 400, message = "Something went wrong"), //
 			@ApiResponse(code = 422, message = "Invalid username/password supplied")})
-	public LoginResponseDto autenticar(@RequestBody LoginRequestDto usuario) {
+	public TokenDto autenticar(@RequestBody CredencialesDto usuario) {
 		return this.ingresoBusiness.autenticar(usuario);
 	}
 
 
 	@RequestMapping(value = "/registrar", method = RequestMethod.POST)
-	public LoginRequestDto registrar(@RequestBody LoginRequestDto usuario) {
-		return this.ingresoBusiness.registrar(usuario);
+	@ApiOperation(value = "${IngresoController.registrar}")
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "Something went wrong"), //
+			@ApiResponse(code = 422, message = "Invalid username/password supplied")})
+	public void registrar(@RequestBody CredencialesDto usuario) {
+		this.ingresoBusiness.registrar(usuario);
 	}
 
 }

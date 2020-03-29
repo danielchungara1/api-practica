@@ -3,7 +3,7 @@ package com.api.practica.ingreso;
 import com.api.practica.commons.dto.BaseDto;
 
 
-public class LoginResponseDto {
+public class TokenDto {
 
 	private String token;
 

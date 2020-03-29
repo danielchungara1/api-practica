@@ -2,14 +2,13 @@ package com.api.practica.productos;
 
 import java.util.List;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import com.api.practica.exceptions.ResourceNotFoundException;
 
@@ -19,8 +18,15 @@ public class ProductoController {
 	
 	@Autowired
 	ProductoBusiness productoBusiness;
-	
-	@RequestMapping(value = "", method = RequestMethod.GET)
+
+	@GetMapping(value = "")
+	@PreAuthorize("hasAuthority('ADMINISTRADOR')")
+	@ApiOperation(value = "${ProductoController.listarProductos}", response = ProductoDto.class)
+	@ApiResponses(value = {//
+			@ApiResponse(code = 400, message = "Something went wrong"), //
+			@ApiResponse(code = 403, message = "Access denied"), //
+			@ApiResponse(code = 404, message = "The user doesn't exist"), //
+			@ApiResponse(code = 500, message = "Expired or invalid JWT token")})
 	public List<ProductoDto> listaProductos() {
 		return this.productoBusiness.getProductos();
 	}

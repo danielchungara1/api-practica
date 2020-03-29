@@ -1,0 +1,14 @@
+#BASE DE DATOS
+spring.datasource.url: jdbc:mysql://localhost:3306/practica?serverTimezone=UTC&useLegacyDatetimeCode=false
+spring.datasource.username: root
+spring.datasource.password:
+spring.datasource.driver.class: com.mysql.jdbc.Driver
+spring.jpa.hibernate.ddl-auto: validate
+
+#CONTROLLERS
+ProductoController:
+  listarProductos: Lista todos los productos.
+
+IngresoController:
+    autenticar: Autenticacion de usuarios.
+    registrar: Registro de usuarios.

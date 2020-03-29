@@ -1,7 +1,6 @@
 package com.api.practica.ingreso;
 
 import com.api.practica.commons.ModelMapperWrapper;
-import com.api.practica.commons.PasswordManager;
 import com.api.practica.exceptions.CredencialesInvalidasException;
 import com.api.practica.exceptions.CustomException;
 import com.api.practica.exceptions.EmailExistenteException;
@@ -13,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,23 +35,19 @@ public class IngresoBusiness {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    public LoginResponseDto autenticar(LoginRequestDto usuario) {
+    public TokenDto autenticar(CredencialesDto usuario) {
         Optional<Usuario> u = this.usuarioRepository.findByEmail(usuario.getEmail());
         if (!u.isPresent()) {
             throw new CredencialesInvalidasException("Usuario invalido.");
         }
 
         Usuario usuarioBd = u.get();
-//
-//        if (passwordEncoder.matches(usuario.getPassword(), usuarioBd.getPassword())){
-//            throw new CredencialesInvalidasException("Password invalido.");
-//        }
 
         try {
 
             this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(usuario.getEmail(), usuario.getPassword()));
             String token =  jwtTokenProvider.createToken(usuarioBd.getEmail(), usuarioBd.getRoles());
-            LoginResponseDto response = new LoginResponseDto();
+            TokenDto response = new TokenDto();
             response.setToken(token);
             return response;
 
@@ -67,7 +61,7 @@ public class IngresoBusiness {
 
 
 
-    public LoginRequestDto registrar(LoginRequestDto usuario) {
+    public void registrar(CredencialesDto usuario) {
 
         if (this.usuarioRepository.existsByEmail(usuario.getEmail())){
             throw new EmailExistenteException("El email ingresado no esta disponible.");
@@ -75,7 +69,7 @@ public class IngresoBusiness {
 
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         Usuario u = this.usuarioRepository.save(modelMapper.map(usuario, Usuario.class));
-        return this.modelMapper.map(u, LoginRequestDto.class);
+
     }
 
     public AuthenticationManager getAuthenticationManager() {
