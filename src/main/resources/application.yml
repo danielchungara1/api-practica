@@ -8,6 +8,11 @@ spring.jpa.hibernate.ddl-auto: validate
 #CONTROLLERS
 ProductoController:
   listarProductos: Lista todos los productos.
+  getProductoById: Obtiene el producto segun el id.
+  searchProducto: Buqueda de productos por nombre.
+  saveProducto: Guarda un nuevo producto.
+  deleteProducto: Elimina un producto por id.
+  editProducto: Modifica un producto.
 
 IngresoController:
     autenticar: Autenticacion de usuarios.

@@ -20,7 +20,7 @@ public class ProductoController {
 	ProductoBusiness productoBusiness;
 
 	@GetMapping(value = "")
-	@PreAuthorize("hasAuthority('ADMINISTRADOR')")
+	@PreAuthorize("hasAuthority('ADMINISTRADOR') or hasAnyAuthority('USUARIO')")
 	@ApiOperation(value = "${ProductoController.listarProductos}", response = ProductoDto.class)
 	@ApiResponses(value = {//
 			@ApiResponse(code = 400, message = "Something went wrong"), //
@@ -31,27 +31,64 @@ public class ProductoController {
 		return this.productoBusiness.getProductos();
 	}
 	
-	@RequestMapping(value = "", method = RequestMethod.POST)
-	public ProductoDto saveProducto(@RequestBody ProductoDto newProducto) {
-		return this.productoBusiness.saveProducto(newProducto);
-	}
-	
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@GetMapping(value = "/{id}")
+	@PreAuthorize("hasAuthority('ADMINISTRADOR') or hasAnyAuthority('USUARIO')")
+	@ApiOperation(value = "${ProductoController.getProductoById}", response = ProductoDto.class)
+	@ApiResponses(value = {//
+			@ApiResponse(code = 400, message = "Something went wrong"), //
+			@ApiResponse(code = 403, message = "Access denied"), //
+			@ApiResponse(code = 404, message = "The user doesn't exist"), //
+			@ApiResponse(code = 500, message = "Expired or invalid JWT token")})
 	public ProductoDto getProducto(@PathVariable(value="id") Long id) throws ResourceNotFoundException {
 		return this.productoBusiness.getProductoById(id);
 	}
-	
-	@RequestMapping(value = "/search-products", method = RequestMethod.GET)
+
+	@GetMapping(value = "/search-products")
+	@PreAuthorize("hasAuthority('ADMINISTRADOR') or hasAnyAuthority('USUARIO')")
+	@ApiOperation(value = "${ProductoController.searchProducto}", response = ProductoDto.class)
+	@ApiResponses(value = {//
+			@ApiResponse(code = 400, message = "Something went wrong"), //
+			@ApiResponse(code = 403, message = "Access denied"), //
+			@ApiResponse(code = 404, message = "The user doesn't exist"), //
+			@ApiResponse(code = 500, message = "Expired or invalid JWT token")})
 	public List<ProductoDto> searchProductos(@RequestParam String text) throws ResourceNotFoundException {
 		return this.productoBusiness.searchProductos(text);
 	}
-	
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+
+	@PostMapping(value = "")
+	@PreAuthorize("hasAuthority('ADMINISTRADOR')")
+	@ApiOperation(value = "${ProductoController.saveProducto}", response = ProductoDto.class)
+	@ApiResponses(value = {//
+			@ApiResponse(code = 400, message = "Something went wrong"), //
+			@ApiResponse(code = 403, message = "Access denied"), //
+			@ApiResponse(code = 404, message = "The user doesn't exist"), //
+			@ApiResponse(code = 500, message = "Expired or invalid JWT token")})
+	public ProductoDto saveProducto(@RequestBody ProductoDto newProducto) {
+		return this.productoBusiness.saveProducto(newProducto);
+	}
+
+
+	@DeleteMapping(value = "/delete/{id}")
+	@PreAuthorize("hasAuthority('ADMINISTRADOR')")
+	@ApiOperation(value = "${ProductoController.deleteProducto}")
+	@ApiResponses(value = {//
+			@ApiResponse(code = 400, message = "Something went wrong"), //
+			@ApiResponse(code = 403, message = "Access denied"), //
+			@ApiResponse(code = 404, message = "The user doesn't exist"), //
+			@ApiResponse(code = 500, message = "Expired or invalid JWT token")})
 	public void deleteProductoById(@PathVariable(value="id") Long id) throws ResourceNotFoundException {
 		this.productoBusiness.deleteProductoById(id);
 	}
-	
-	@RequestMapping(value = "/edit", method = RequestMethod.PUT)
+
+
+	@PutMapping(value = "/edit")
+	@PreAuthorize("hasAuthority('ADMINISTRADOR')")
+	@ApiOperation(value = "${ProductoController.editProducto}" , response = ProductoDto.class)
+	@ApiResponses(value = {//
+			@ApiResponse(code = 400, message = "Something went wrong"), //
+			@ApiResponse(code = 403, message = "Access denied"), //
+			@ApiResponse(code = 404, message = "The user doesn't exist"), //
+			@ApiResponse(code = 500, message = "Expired or invalid JWT token")})
 	public ProductoDto updateProducto(@RequestBody ProductoDto producto) {
 		return this.productoBusiness.updateProducto(producto);
 	}
