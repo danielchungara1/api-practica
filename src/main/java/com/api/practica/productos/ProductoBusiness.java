@@ -24,10 +24,8 @@ public class ProductoBusiness {
 		return Arrays.asList(this.modelMapper.map(this.productoRepository.findAll(), ProductoDto[].class));
 	}
 
-	public ProductoDto saveProducto(ProductoDto p) {
+	public void saveProducto(ProductoNuevoDto p) {
 		Producto producto = this.productoRepository.save(modelMapper.map(p, Producto.class));
-
-		return this.modelMapper.map(producto, ProductoDto.class);
 	}
 
 	public ProductoDto getProductoById(Long id) throws ResourceNotFoundException {
@@ -44,7 +42,7 @@ public class ProductoBusiness {
 	}
 
 	public List<ProductoDto> searchProductos(String text) {	
-		return Arrays.asList(this.modelMapper.map(this.productoRepository.findAllByNombreContaining(text), ProductoDto[].class));
+		return Arrays.asList(this.modelMapper.map(this.productoRepository.findAllByNombreContainingIgnoreCase(text), ProductoDto[].class));
 	}
 
 	public void deleteProductoById(Long id) {
@@ -58,7 +56,8 @@ public class ProductoBusiness {
 
 	public ProductoDto updateProducto(ProductoDto producto) {
 		// TODO Auto-generated method stub
-		return this.saveProducto(producto);
+		this.productoRepository.save(modelMapper.map(producto, Producto.class));
+		return producto;
 	}
 
 }

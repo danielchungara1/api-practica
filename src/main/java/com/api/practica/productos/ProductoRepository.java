@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long>{
 	
-	public List<Producto> findAllByNombreContaining(String nombre);
+	public List<Producto> findAllByNombreContainingIgnoreCase(String nombre);
 	
 }

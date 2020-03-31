@@ -57,14 +57,14 @@ public class ProductoController {
 
 	@PostMapping(value = "")
 	@PreAuthorize("hasAuthority('ADMINISTRADOR')")
-	@ApiOperation(value = "${ProductoController.saveProducto}", response = ProductoDto.class)
+	@ApiOperation(value = "${ProductoController.saveProducto}")
 	@ApiResponses(value = {//
 			@ApiResponse(code = 400, message = "Something went wrong"), //
 			@ApiResponse(code = 403, message = "Access denied"), //
 			@ApiResponse(code = 404, message = "The user doesn't exist"), //
 			@ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-	public ProductoDto saveProducto(@RequestBody ProductoDto newProducto) {
-		return this.productoBusiness.saveProducto(newProducto);
+	public void saveProducto(@RequestBody ProductoNuevoDto newProducto) {
+		this.productoBusiness.saveProducto(newProducto);
 	}
 
 

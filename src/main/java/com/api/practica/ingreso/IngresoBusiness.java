@@ -5,6 +5,8 @@ import com.api.practica.exceptions.CredencialesInvalidasException;
 import com.api.practica.exceptions.CustomException;
 import com.api.practica.exceptions.EmailExistenteException;
 import com.api.practica.security.JwtTokenProvider;
+import com.api.practica.security.Rol;
+import com.api.practica.security.RolRepository;
 import com.api.practica.usuario.Usuario;
 import com.api.practica.usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +17,20 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class IngresoBusiness {
 
+    private static final Long ROL_USUARIO = Long.valueOf(2);
+
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private RolRepository rolRepository;
 
     @Autowired
     private ModelMapperWrapper modelMapper;
@@ -53,7 +62,7 @@ public class IngresoBusiness {
 
         } catch (AuthenticationException e) {
 
-            throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new CustomException("Usuario o contraseña invalidos.", HttpStatus.UNPROCESSABLE_ENTITY);
 
         }
 
@@ -61,14 +70,21 @@ public class IngresoBusiness {
 
 
 
-    public void registrar(CredencialesDto usuario) {
+    public void registrar(CredencialesDto credencialesDto) {
 
-        if (this.usuarioRepository.existsByEmail(usuario.getEmail())){
+        if (this.usuarioRepository.existsByEmail(credencialesDto.getEmail())){
             throw new EmailExistenteException("El email ingresado no esta disponible.");
         }
 
-        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-        Usuario u = this.usuarioRepository.save(modelMapper.map(usuario, Usuario.class));
+        credencialesDto.setPassword(passwordEncoder.encode(credencialesDto.getPassword()));
+        Usuario usuarioNuevo = modelMapper.map(credencialesDto, Usuario.class);
+
+        Rol rolUsuario = this.rolRepository.findById(ROL_USUARIO).get();
+        List<Rol> roles = new ArrayList<>();
+        roles.add(rolUsuario);
+        usuarioNuevo.setRoles(roles);
+
+        this.usuarioRepository.save(usuarioNuevo);
 
     }
 
