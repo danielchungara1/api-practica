@@ -1,4 +1,4 @@
-package com.api.practica.security;
+package com.api.practica.security.roles;
 
 import com.api.practica.commons.entity.BaseEntity;
 import com.api.practica.commons.entity.BaseEntityWithTimeStamp;

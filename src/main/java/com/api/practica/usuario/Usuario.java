@@ -1,12 +1,10 @@
 package com.api.practica.usuario;
 
 import com.api.practica.commons.entity.BaseEntity;
-import com.api.practica.security.Rol;
+import com.api.practica.security.roles.Rol;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 
 
 @Entity
