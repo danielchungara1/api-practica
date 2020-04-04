@@ -23,6 +23,10 @@ ProductoController:
   deleteProducto: Elimina un producto por id.
   editProducto: Modifica un producto.
 
+ProductosMeliController:
+  listarProductosPorCategoria: Lista productos de Mercado Libre, por categoria paginados.
+  listarProductosPorNombre: Lista productos de Mercado Libre, por nombre paginados.
+
 IngresoController:
     autenticar: Autenticacion de usuarios.
     registrar: Registro de usuarios.
