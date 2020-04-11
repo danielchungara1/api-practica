@@ -33,7 +33,7 @@ public class JwtTokenProvider {
 
     private String secretKey = "piramides";
 
-    private long validityInMilliseconds = 3600000; // 1h
+    private long validityInMilliseconds = 2880000; // 8h
 
 
     @Autowired

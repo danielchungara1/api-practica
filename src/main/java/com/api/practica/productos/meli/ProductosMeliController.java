@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/productos/meli")
 public class ProductosMeliController {
@@ -24,10 +26,10 @@ public class ProductosMeliController {
 			@ApiResponse(code = 403, message = "Access denied"), //
 			@ApiResponse(code = 404, message = "The user doesn't exist"), //
 			@ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-	public Mono<String> listarProductosPorNombre(
-			@RequestParam String nombre,
-			@RequestParam Integer limit,
-			@RequestParam Integer offset) {
+	public List<ProductoMeliDto> listarProductosPorNombre(
+			@RequestParam (required = true) String nombre,
+			@RequestParam (required = true) Integer limit,
+			@RequestParam (required = true) Integer offset) throws Exception {
 		return this.productoBusiness.getProductosPorNombre(nombre, limit, offset);
 	}
 
