@@ -18,7 +18,7 @@ public class ProductoMeliBusiness {
 
 	public Mono<String> getProductosPorNombre(String nombre, Integer limite, Integer offset) {
 		String endPoint = "https://api.mercadolibre.com/sites/MLA/search?q=${nombre}&offset=${offset}&limit=${limite}";
-		String hardEndPoint = "https://api.mercadolibre.com/sites/MLA/search?q=ipod%20nano&offset=3&limit=3";
+		String hardEndPoint = "https://api.mercadolibre.com/sites/MLA/search?q=ipod%20nano&offset=0&limit=1";
 
 		WebClient webClient = WebClient.create(hardEndPoint);
 		Mono<String> result = webClient.get()
