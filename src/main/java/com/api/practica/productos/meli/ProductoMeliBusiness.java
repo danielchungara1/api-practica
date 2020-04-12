@@ -4,6 +4,7 @@ import com.api.practica.commons.ModelMapperWrapper;
 import com.api.practica.dtos.CollectionPaginatedDto;
 import com.api.practica.exceptions.CustomException;
 import com.api.practica.exceptions.ResourceNotFoundException;
+import com.api.practica.services.BackendService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -32,70 +33,41 @@ import java.util.Optional;
 @Service
 public class ProductoMeliBusiness {
 
+	@Autowired
+	BackendService backendService;
+
 	public CollectionPaginatedDto<ProductoMeliDto> getProductosPorNombre(String nombre, Integer limite, Integer offset) throws Exception {
 		return this.sendGet(nombre, limite, offset);
 	}
 
 	private CollectionPaginatedDto<ProductoMeliDto> sendGet(String txt, Integer limite, Integer offset) throws Exception {
-		CloseableHttpClient httpClient = HttpClients.createDefault();
+
 		String endPointProductos = String.format("https://api.mercadolibre.com/sites/MLA/search?q=%s&offset=%d&limit=%d", txt, offset, limite);
-		HttpGet requestProductos = new HttpGet(endPointProductos);
+		JSONObject jsonProductos =  this.backendService.get(endPointProductos);
+		JSONArray resultsProductos = jsonProductos.getJSONArray("results");
 
-		try (CloseableHttpResponse responseGetProductos = httpClient.execute(requestProductos)) {
-			if (responseGetProductos.getStatusLine().getStatusCode() == 200){
-				HttpEntity entityProductos = responseGetProductos.getEntity();
-				if (entityProductos != null) {
-					// return it as a String
-					String responseBodyProductos = EntityUtils.toString(entityProductos);
+		ObjectMapper mapperProductos = new ObjectMapper();
+		List<ProductoMeliDto> productos = Arrays.asList(mapperProductos.readValue(resultsProductos.toString(), ProductoMeliDto[].class));
+		CollectionPaginatedDto<ProductoMeliDto> productosPaginados = new CollectionPaginatedDto<>();
+		productosPaginados.setResultados(productos);
+		productosPaginados.setLimit(jsonProductos.getJSONObject("paging").getLong("limit"));
+		productosPaginados.setOffset(jsonProductos.getJSONObject("paging").getLong("offset"));
+		productosPaginados.setTotal(jsonProductos.getJSONObject("paging").getLong("total"));
 
-					// Org.Json
-					JSONObject objProductos = new JSONObject(responseBodyProductos);
-					JSONArray resultsProductos = objProductos.getJSONArray("results");
+		//Agrego las imagenes
+		for (ProductoMeliDto productoMeliDto : productos) {
+			String endPointItem = "https://api.mercadolibre.com/items/" + productoMeliDto.getId();
+			JSONObject jsonPictures = this.backendService.get(endPointItem);
+			JSONArray resultPictures = jsonPictures.getJSONArray("pictures");
 
-					// Jackson
-					ObjectMapper mapperProductos = new ObjectMapper();
-					List<ProductoMeliDto> productos = Arrays.asList(mapperProductos.readValue(resultsProductos.toString(), ProductoMeliDto[].class));
+			// Jackson
+			ObjectMapper mapperPictures = new ObjectMapper();
+			List<PictureItemDto> pictures = Arrays.asList(mapperProductos.readValue(resultPictures.toString(), PictureItemDto[].class));
 
-					// Agregar Pictures
-					productos.forEach(productoMeliDto -> {
-						String itItem = productoMeliDto.getId();
-						String endPointItem = "https://api.mercadolibre.com/items/" + itItem;
-						HttpGet requestItem = new HttpGet(endPointItem);
-						try (CloseableHttpResponse responseGetItem = httpClient.execute(requestItem)) {
-							if (responseGetItem.getStatusLine().getStatusCode() == 200){
-								HttpEntity entityItem = responseGetItem.getEntity();
-								if (entityItem != null) {
-									// return it as a String
-									String responseBodyItem = EntityUtils.toString(entityItem);
-
-									// Org.Json
-									JSONObject objItem = new JSONObject(responseBodyItem);
-									JSONArray resultPictures = objItem.getJSONArray("pictures");
-
-									// Jackson
-									ObjectMapper mapperPictures = new ObjectMapper();
-									List<PictureItemDto> pictures = Arrays.asList(mapperProductos.readValue(resultPictures.toString(), PictureItemDto[].class));
-
-									// Agrego las pictures
-									productoMeliDto.setPictures(pictures);
-								}
-							}
-						} catch (ClientProtocolException e) {
-							e.printStackTrace();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-
-					});
-					CollectionPaginatedDto<ProductoMeliDto> productosPaginados = new CollectionPaginatedDto<>();
-					productosPaginados.setResultados(productos);
-					productosPaginados.setLimit(objProductos.getJSONObject("paging").getLong("limit"));
-					productosPaginados.setOffset(objProductos.getJSONObject("paging").getLong("offset"));
-					productosPaginados.setTotal(objProductos.getJSONObject("paging").getLong("total"));
-					return productosPaginados;
-				}
-			}
-			throw new CustomException("Error al buscar productos de mercado libre.", HttpStatus.valueOf(responseGetProductos.getStatusLine().getStatusCode()));
+			// Agrego las pictures
+			productoMeliDto.setPictures(pictures);
 		}
+
+		return productosPaginados;
 	}
 }
