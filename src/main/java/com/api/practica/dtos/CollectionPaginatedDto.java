@@ -1,44 +1,29 @@
 package com.api.practica.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CollectionPaginatedDto <T> {
 
-    private List<T> resultados;
+    private List<T> results;
+    private Paging paging;
 
-    private Long total;
-    private Long offset;
-    private Long limit;
 
-    public List<T> getResultados() {
-        return resultados;
+    public List<T> getResults() {
+        return results;
     }
 
-    public void setResultados(List<T> resultados) {
-        this.resultados = resultados;
+    public void setResults(List<T> results) {
+        this.results = results;
     }
 
-    public Long getTotal() {
-        return total;
+    public Paging getPaging() {
+        return paging;
     }
 
-    public void setTotal(Long total) {
-        this.total = total;
-    }
-
-    public Long getOffset() {
-        return offset;
-    }
-
-    public void setOffset(Long offset) {
-        this.offset = offset;
-    }
-
-    public Long getLimit() {
-        return limit;
-    }
-
-    public void setLimit(Long limit) {
-        this.limit = limit;
+    public void setPaging(Paging paging) {
+        this.paging = paging;
     }
 }
