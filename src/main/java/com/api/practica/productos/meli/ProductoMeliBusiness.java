@@ -1,6 +1,7 @@
 package com.api.practica.productos.meli;
 
 import com.api.practica.commons.ModelMapperWrapper;
+import com.api.practica.dtos.CollectionPaginatedDto;
 import com.api.practica.exceptions.CustomException;
 import com.api.practica.exceptions.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,11 +32,11 @@ import java.util.Optional;
 @Service
 public class ProductoMeliBusiness {
 
-	public List<ProductoMeliDto> getProductosPorNombre(String nombre, Integer limite, Integer offset) throws Exception {
+	public CollectionPaginatedDto<ProductoMeliDto> getProductosPorNombre(String nombre, Integer limite, Integer offset) throws Exception {
 		return this.sendGet(nombre, limite, offset);
 	}
 
-	private List<ProductoMeliDto> sendGet(String txt, Integer limite, Integer offset) throws Exception {
+	private CollectionPaginatedDto<ProductoMeliDto> sendGet(String txt, Integer limite, Integer offset) throws Exception {
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		String endPointProductos = String.format("https://api.mercadolibre.com/sites/MLA/search?q=%s&offset=%d&limit=%d", txt, offset, limite);
 		HttpGet requestProductos = new HttpGet(endPointProductos);
@@ -86,7 +87,12 @@ public class ProductoMeliBusiness {
 						}
 
 					});
-					return productos;
+					CollectionPaginatedDto<ProductoMeliDto> productosPaginados = new CollectionPaginatedDto<>();
+					productosPaginados.setResultados(productos);
+					productosPaginados.setLimit(objProductos.getJSONObject("paging").getLong("limit"));
+					productosPaginados.setOffset(objProductos.getJSONObject("paging").getLong("offset"));
+					productosPaginados.setTotal(objProductos.getJSONObject("paging").getLong("total"));
+					return productosPaginados;
 				}
 			}
 			throw new CustomException("Error al buscar productos de mercado libre.", HttpStatus.valueOf(responseGetProductos.getStatusLine().getStatusCode()));

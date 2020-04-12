@@ -1,5 +1,6 @@
 package com.api.practica.productos.meli;
 
+import com.api.practica.dtos.CollectionPaginatedDto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -26,7 +27,7 @@ public class ProductosMeliController {
 			@ApiResponse(code = 403, message = "Access denied"), //
 			@ApiResponse(code = 404, message = "The user doesn't exist"), //
 			@ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-	public List<ProductoMeliDto> listarProductosPorNombre(
+	public CollectionPaginatedDto<ProductoMeliDto> listarProductosPorNombre(
 			@RequestParam (required = true) String nombre,
 			@RequestParam (required = true) Integer limit,
 			@RequestParam (required = true) Integer offset) throws Exception {
