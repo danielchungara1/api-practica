@@ -1,4 +1,4 @@
-package com.api.practica.security.roles;
+package com.api.practica.roles;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

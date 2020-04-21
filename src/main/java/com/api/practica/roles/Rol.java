@@ -1,6 +1,5 @@
-package com.api.practica.security.roles;
+package com.api.practica.roles;
 
-import com.api.practica.commons.entity.BaseEntity;
 import com.api.practica.commons.entity.BaseEntityWithTimeStamp;
 import org.springframework.security.core.GrantedAuthority;
 

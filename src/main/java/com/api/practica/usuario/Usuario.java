@@ -1,7 +1,7 @@
 package com.api.practica.usuario;
 
 import com.api.practica.commons.entity.BaseEntity;
-import com.api.practica.security.roles.Rol;
+import com.api.practica.roles.Rol;
 
 import javax.persistence.*;
 import java.util.List;

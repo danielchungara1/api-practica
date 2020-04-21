@@ -2,8 +2,7 @@ package com.api.practica.services;
 
 import com.api.practica.dtos.CollectionPaginatedDto;
 import com.api.practica.exceptions.CustomException;
-import com.api.practica.productos.meli.ProductoMeliDto;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.api.practica.meli.ProductoMeliDto;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpEntity;

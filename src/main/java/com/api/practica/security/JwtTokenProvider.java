@@ -1,7 +1,7 @@
 package com.api.practica.security;
 
 import com.api.practica.exceptions.CustomException;
-import com.api.practica.security.roles.Rol;
+import com.api.practica.roles.Rol;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -33,7 +33,7 @@ public class JwtTokenProvider {
 
     private String secretKey = "piramides";
 
-    private long validityInMilliseconds = 2880000; // 8h
+    private long validityInMilliseconds = 43200000;
 
 
     @Autowired

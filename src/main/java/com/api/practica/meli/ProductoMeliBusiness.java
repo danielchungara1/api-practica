@@ -1,4 +1,4 @@
-package com.api.practica.productos.meli;
+package com.api.practica.meli;
 
 import com.api.practica.dtos.CollectionPaginatedDto;
 import com.api.practica.services.BackendService;
@@ -20,6 +20,7 @@ public class ProductoMeliBusiness {
 	private CollectionPaginatedDto<ProductoMeliDto> sendGet(String txt, Integer limite, Integer offset) throws Exception {
 
 		//Busco los productos
+		txt = txt.replace(" ", "%20");
 		String endPointProductos = String.format("https://api.mercadolibre.com/sites/MLA/search?q=%s&offset=%d&limit=%d", txt, offset, limite);
 
 		CollectionPaginatedDto<ProductoMeliDto> productosPaginados =

@@ -1,4 +1,4 @@
-package com.api.practica.productos.meli;
+package com.api.practica.meli;
 
 import com.api.practica.dtos.CollectionPaginatedDto;
 import io.swagger.annotations.ApiOperation;
@@ -7,10 +7,6 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/productos/meli")

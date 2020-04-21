@@ -1,4 +1,4 @@
-package com.api.practica.productos.meli;
+package com.api.practica.meli;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
