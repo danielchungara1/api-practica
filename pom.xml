@@ -131,6 +131,13 @@
 			<version>20190722</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-jpamodelgen -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+			<version>5.4.16.Final</version>
+			<scope>provided</scope>
+		</dependency>
 
 	</dependencies>
 
