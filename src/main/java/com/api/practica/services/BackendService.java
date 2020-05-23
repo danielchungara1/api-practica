@@ -51,10 +51,10 @@ public class BackendService {
         return resultObject;
     }
 
-    public  <T extends ProductoMeliDto> CollectionPaginatedDto<T> getCollectionPaginatedDto(String endpoint, Class<T> classType) throws IOException {
+    public  <T> List<T> getCollectionPaginatedDto(String endpoint, Class<T> classType) throws IOException {
         JSONObject jsonResult =  this.get(endpoint);
         ObjectMapper mapper = new ObjectMapper();
-        JavaType javaType = mapper.getTypeFactory().constructParametricType(CollectionPaginatedDto.class, classType);
+        JavaType javaType = mapper.getTypeFactory().constructParametricType(List.class, classType);
         return mapper.readValue(jsonResult.toString(), javaType);
     }
 }
